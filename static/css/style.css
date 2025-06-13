@@ -10,13 +10,39 @@
     }
 }
 
+@keyframes floating {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
 .animate-fadeInUp {
     animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.floating-animation {
+    animation: floating 6s ease-in-out infinite;
 }
 
 /* Hero section styles */
 .hero-gradient {
     background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+}
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    padding-top: 2rem;
+}
+
+.min-vh-75 {
+    min-height: 75vh;
 }
 
 .floating-search {
@@ -35,6 +61,21 @@
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     border-color: #4f46e5;
+}
+
+/* Improved Card Styles */
+.card {
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+}
+
+.shadow-hover:hover {
+    transform: translateY(-5px);
+}
+
+.rounded-4 {
+    border-radius: 1rem;
 }
 
 /* Statistics cards */
@@ -82,6 +123,32 @@
     transition: color 0.3s ease;
 }
 
+/* Icon Box Styles */
+.icon-box {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.hover-card:hover .icon-box {
+    transform: scale(1.1);
+}
+
+/* Input Group Improvements */
+.input-group-lg > .form-control {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+}
+
+.input-group-lg > .input-group-text {
+    padding: 0 1.25rem;
+}
+
 /* Custom utility classes */
 .shadow-hover:hover {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -92,6 +159,97 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+/* Custom Utilities */
+.opacity-90 {
+    opacity: 0.9;
+}
+
+/* Better Button Styles */
+.btn {
+    padding: 0.8rem 1.5rem;
+    font-weight: 500;
+    border-radius: 0.75rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+}
+
+/* Improved Shadows */
+.shadow-lg {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Background Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+}
+
+/* Animation Delays */
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+/* Section Spacing */
+.py-7 {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
+}
+
+.mt-7 {
+    margin-top: 5rem !important;
+}
+
+/* Card improvements */
+.card {
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+}
+
+.hover-card {
+    cursor: pointer;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Badge improvements */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+/* Sticky footer */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+/* Fix for main content padding */
+main {
+    padding-top: 1rem;
 }
 
 /* Responsive adjustments */

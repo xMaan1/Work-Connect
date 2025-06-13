@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('dashboard/', views.employer_dashboard, name='employer_dashboard'),
-    # job posting views will go here later
+    path('companies/', views.company_list, name='companies'),
+    path('post-job/', views.post_job, name='post_job'),
 ]
