@@ -145,4 +145,132 @@
         </div>
     </div>
 </div>
+
+<!-- Categories Section -->
+<section class="py-7 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Popular Categories</h2>
+            <p class="text-muted">Explore jobs by industry</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card card h-100 p-4">
+                    <div class="text-center">
+                        <i class="bi bi-laptop category-icon"></i>
+                        <h5 class="mb-2">Technology</h5>
+                        <p class="text-muted mb-0">1,234 jobs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card card h-100 p-4">
+                    <div class="text-center">
+                        <i class="bi bi-bank category-icon"></i>
+                        <h5 class="mb-2">Finance</h5>
+                        <p class="text-muted mb-0">867 jobs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card card h-100 p-4">
+                    <div class="text-center">
+                        <i class="bi bi-basket category-icon"></i>
+                        <h5 class="mb-2">Marketing</h5>
+                        <p class="text-muted mb-0">577 jobs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card card h-100 p-4">
+                    <div class="text-center">
+                        <i class="bi bi-heart-pulse category-icon"></i>
+                        <h5 class="mb-2">Healthcare</h5>
+                        <p class="text-muted mb-0">432 jobs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-7">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number animate-fadeInUp">10K+</div>
+                    <h3 class="h5 mb-0">Active Jobs</h3>
+                    <p class="text-muted mb-0">Ready for applications</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number animate-fadeInUp">5K+</div>
+                    <h3 class="h5 mb-0">Companies</h3>
+                    <p class="text-muted mb-0">Hiring now</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-number animate-fadeInUp">15K+</div>
+                    <h3 class="h5 mb-0">Job Seekers</h3>
+                    <p class="text-muted mb-0">Found their dream job</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Jobs -->
+<section class="py-7 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Featured Jobs</h2>
+            <p class="text-muted">Handpicked opportunities for you</p>
+        </div>
+        <div class="row g-4">
+            {% for job in featured_jobs %}
+            <div class="col-md-4">
+                <div class="job-card card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="company-logo me-3">
+                                {% if job.company.profile_picture %}
+                                    <img src="{{ job.company.profile_picture.url }}" alt="{{ job.company }}" class="rounded" width="50">
+                                {% else %}
+                                    <div class="bg-light rounded p-2">
+                                        <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">{{ job.title }}</h5>
+                                <p class="text-muted mb-0">{{ job.company.get_full_name }}</p>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="badge bg-light text-dark me-2">
+                                <i class="bi bi-geo-alt me-1"></i>{{ job.location }}
+                            </span>
+                            <span class="badge bg-light text-dark">
+                                <i class="bi bi-clock me-1"></i>{{ job.job_type }}
+                            </span>
+                        </div>
+                        <p class="card-text text-muted">{{ job.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-primary">{{ job.salary_range }}</span>
+                            <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'job_list' %}" class="btn btn-primary btn-lg">View All Jobs</a>
+        </div>
+    </div>
+</section>
 {% endblock %}
