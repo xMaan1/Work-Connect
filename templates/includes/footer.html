@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4 mb-md-0">
+            <h5 class="text-dark mb-3">WorkConnect</h5>
+            <p class="text-muted mb-0">
+                Connecting talent with opportunity.<br>
+                Find your next career move today.
+            </p>
+        </div>
+        <div class="col-md-2 mb-4 mb-md-0">
+            <h6 class="text-dark mb-3">For Job Seekers</h6>
+            <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="{% url 'job_list' %}" class="text-muted text-decoration-none">Browse Jobs</a></li>
+                <li class="mb-2"><a href="{% url 'companies' %}" class="text-muted text-decoration-none">Companies</a></li>
+                {% if user.is_authenticated and user.role == 'seeker' %}
+                <li class="mb-2"><a href="{% url 'my_applications' %}" class="text-muted text-decoration-none">My Applications</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-md-2 mb-4 mb-md-0">
+            <h6 class="text-dark mb-3">For Employers</h6>
+            <ul class="list-unstyled mb-0">
+                {% if user.is_authenticated and user.role == 'employer' %}
+                <li class="mb-2"><a href="{% url 'post_job' %}" class="text-muted text-decoration-none">Post a Job</a></li>
+                <li class="mb-2"><a href="{% url 'manage_jobs' %}" class="text-muted text-decoration-none">Manage Jobs</a></li>
+                {% else %}
+                <li class="mb-2"><a href="{% url 'register' %}" class="text-muted text-decoration-none">Sign Up</a></li>
+                {% endif %}
+                <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Pricing</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h6 class="text-dark mb-3">Connect With Us</h6>
+            <div class="d-flex gap-3 mb-3">
+                <a href="#" class="text-muted text-decoration-none">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="#" class="text-muted text-decoration-none">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="#" class="text-muted text-decoration-none">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#" class="text-muted text-decoration-none">
+                    <i class="bi bi-instagram"></i>
+                </a>
+            </div>
+            <p class="text-muted small mb-0">
+                © {% now "Y" %} WorkConnect. All rights reserved.<br>
+                <a href="#" class="text-muted text-decoration-none">Privacy Policy</a> · 
+                <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+{% extends "errors/error_base.html" %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+{% with error_code="403" error_title="Access Denied" error_message="You don't have permission to access this page." error_image="403.svg" suggestions=error_suggestions|default:"Make sure you're logged in with the correct account.|Contact an administrator if you need access.|Return to the homepage." %}{% endwith %}

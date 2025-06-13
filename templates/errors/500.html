@@ -1,0 +1,7 @@
+{% extends "errors/error_base.html" %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+{% with error_code="500" error_title="Server Error" error_message="Something went wrong on our end. We've been notified and are working to fix it." error_image="500.svg" suggestions=error_suggestions|default:"Try refreshing the page.|Come back in a few minutes.|Contact support if the problem persists." %}{% endwith %}

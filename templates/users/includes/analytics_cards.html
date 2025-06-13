@@ -1,0 +1,113 @@
+{% load static %}
+
+<div class="row g-4 mb-4">
+    {% if user.role == 'seeker' %}
+        <!-- Profile Views -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-eye text-primary"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Profile Views</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.profile_views }}</h3>
+                    <p class="text-muted small mb-0">
+                        Recruiters who viewed your profile
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-send text-success"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Applications</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.total_applications }}</h3>
+                    <p class="text-muted small mb-0">
+                        Jobs you've applied to
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Rate -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-graph-up text-info"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Success Rate</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.application_success_rate|floatformat:1 }}%</h3>
+                    <p class="text-muted small mb-0">
+                        Applications that progressed
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Profile Views -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-eye text-primary"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Company Views</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.profile_views }}</h3>
+                    <p class="text-muted small mb-0">
+                        Job seekers who viewed your company
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Jobs -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-briefcase text-success"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Active Jobs</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.total_job_posts }}</h3>
+                    <p class="text-muted small mb-0">
+                        Currently open positions
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Applications -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                            <i class="bi bi-people text-info"></i>
+                        </div>
+                        <h6 class="card-title mb-0">Applications</h6>
+                    </div>
+                    <h3 class="mb-2">{{ analytics.total_applications }}</h3>
+                    <p class="text-muted small mb-0">
+                        Candidates who applied
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

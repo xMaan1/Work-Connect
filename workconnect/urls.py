@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from .error_handlers import handler404, handler500, handler403
 
 
 urlpatterns = [
@@ -30,3 +31,18 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('social-auth/', include('social_django.urls', namespace='social')),  # Add social auth URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Error handlers
+handler404 = 'workconnect.error_handlers.handler404'
+handler500 = 'workconnect.error_handlers.handler500'
+handler403 = 'workconnect.error_handlers.handler403'
+
+# Debug toolbar for development
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

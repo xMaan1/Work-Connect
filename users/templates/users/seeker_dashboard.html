@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Welcome Section -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h2 class="mb-1">Welcome back, {{ user.first_name }}!</h2>
+                    <p class="text-muted mb-0">Here's what's happening with your job search</p>
+                </div>
+                <a href="{% url 'job_list' %}" class="btn btn-primary">
+                    Find Jobs
+                </a>
+            </div>
+
+            <!-- Analytics Cards -->
+            {% include 'users/includes/analytics_cards.html' %}
+
+            <!-- Recent Applications -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Applications</h5>
+                        <a href="{% url 'my_applications' %}" class="btn btn-link">View All</a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if recent_applications %}
+                        <div class="list-group list-group-flush">
+                            {% for application in recent_applications %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ application.job.title }}</h6>
+                                            <p class="mb-1 small text-muted">
+                                                <i class="bi bi-building me-1"></i>{{ application.job.company.company_name }}
+                                                <span class="mx-2">&bull;</span>
+                                                <i class="bi bi-geo-alt me-1"></i>{{ application.job.location }}
+                                            </p>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-{{ application.get_status_color }}">
+                                                {{ application.get_status_display }}
+                                            </span>
+                                            <p class="mb-0 small text-muted">
+                                                Applied {{ application.applied_date|timesince }} ago
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <img src="{% static 'img/empty-state.svg' %}" alt="No applications" class="mb-3" style="max-width: 200px;">
+                            <h6>No Applications Yet</h6>
+                            <p class="text-muted mb-0">Start your job search and apply to positions that match your skills.</p>
+                            <a href="{% url 'job_list' %}" class="btn btn-primary mt-3">Browse Jobs</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recommended Jobs -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recommended Jobs</h5>
+                        <a href="{% url 'job_list' %}" class="btn btn-link">View All</a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if recommended_jobs %}
+                        <div class="list-group list-group-flush">
+                            {% for job in recommended_jobs %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ job.title }}</h6>
+                                            <p class="mb-1 small text-muted">
+                                                <i class="bi bi-building me-1"></i>{{ job.company.company_name }}
+                                                <span class="mx-2">&bull;</span>
+                                                <i class="bi bi-geo-alt me-1"></i>{{ job.location }}
+                                                {% if job.salary_range %}
+                                                    <span class="mx-2">&bull;</span>
+                                                    <i class="bi bi-cash me-1"></i>{{ job.salary_range }}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                        <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-primary btn-sm">
+                                            View Job
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <p class="text-muted mb-0">Add skills to your profile to get personalized job recommendations.</p>
+                            <a href="{% url 'update_seeker_profile' %}" class="btn btn-primary mt-3">Update Profile</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Profile Completion Card -->
+            {% include 'users/includes/profile_completion.html' %}
+            
+            <!-- Profile Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="{{ user.get_full_name }}" class="rounded-circle me-3" style="width: 64px; height: 64px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center me-3" style="width: 64px; height: 64px;">
+                                <i class="bi bi-person-fill" style="font-size: 2rem;"></i>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <h5 class="mb-1">{{ user.get_full_name }}</h5>
+                            <p class="mb-0 text-muted">
+                                <i class="bi bi-geo-alt me-1"></i>{{ user.location|default:"Add location" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if user.seeker_profile.skills %}
+                        <h6 class="mb-2">Skills</h6>
+                        <div class="mb-3">
+                            {% for skill in user.seeker_profile.skills.split %}
+                                <span class="badge bg-light text-dark me-1 mb-1">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-grid">
+                        <a href="{% url 'update_seeker_profile' %}" class="btn btn-outline-primary">
+                            Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

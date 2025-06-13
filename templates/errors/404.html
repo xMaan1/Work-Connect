@@ -1,0 +1,7 @@
+{% extends "errors/error_base.html" %}
+
+{% block content %}
+{{ block.super }}
+{% endblock %}
+
+{% with error_code="404" error_title="Page Not Found" error_message="The page you're looking for doesn't exist or has been moved." error_image="404.svg" suggestions=error_suggestions|default:"Try searching for what you need using the navigation above.|Check that you typed the address correctly.|Go back to the previous page and try again." %}{% endwith %}

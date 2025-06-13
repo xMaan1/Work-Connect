@@ -1,0 +1,49 @@
+{% if profile_completion < 100 %}
+<div class="card mb-4 shadow-sm {% if profile_completion < 50 %}border-danger{% elif profile_completion < 80 %}border-warning{% else %}border-info{% endif %}">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Complete Your Profile</h5>
+            <span class="badge {% if profile_completion < 50 %}bg-danger{% elif profile_completion < 80 %}bg-warning{% else %}bg-info{% endif %}">
+                {{ profile_completion }}%
+            </span>
+        </div>
+        <div class="progress mb-3" style="height: 6px;">
+            <div class="progress-bar {% if profile_completion < 50 %}bg-danger{% elif profile_completion < 80 %}bg-warning{% else %}bg-info{% endif %}" 
+                 role="progressbar" 
+                 style="width: {{ profile_completion }}%" 
+                 aria-valuenow="{{ profile_completion }}" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+            </div>
+        </div>
+        <p class="text-muted mb-0">
+            {% if profile_completion < 50 %}
+                A complete profile helps you stand out and get noticed by {% if user.role == 'seeker' %}employers{% else %}job seekers{% endif %}.
+                <span class="d-block mt-2 small">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i>
+                    Your profile needs attention!
+                </span>
+            {% elif profile_completion < 80 %}
+                You're getting there! Add more details to make your profile even better.
+                <span class="d-block mt-2 small">
+                    <i class="bi bi-info-circle-fill text-warning me-1"></i>
+                    Keep going!
+                </span>
+            {% else %}
+                Just a few more details to make your profile perfect!
+                <span class="d-block mt-2 small">
+                    <i class="bi bi-check-circle-fill text-info me-1"></i>
+                    Almost there!
+                </span>
+            {% endif %}
+        </p>
+        <div class="mt-3">
+            <a href="{% if user.role == 'seeker' %}{% url 'update_seeker_profile' %}{% else %}{% url 'update_employer_profile' %}{% endif %}" 
+               class="btn {% if profile_completion < 50 %}btn-danger{% elif profile_completion < 80 %}btn-warning{% else %}btn-info{% endif %} btn-sm">
+                <i class="bi bi-pencil-square me-1"></i>
+                Complete Profile
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
