@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Create Your WorkConnect Account</h3>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please correct the following errors:</strong>
+                            {{ form.errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                            {{ form.username.errors }}
+                            <input type="text" name="{{ form.username.name }}" class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                                   id="{{ form.username.id_for_label }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                            {{ form.email.errors }}
+                            <input type="email" name="{{ form.email.name }}" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                   id="{{ form.email.id_for_label }}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Account Type</label>
+                            {{ form.role.errors }}
+                            <div class="row g-3">
+                                {% for radio in form.role %}
+                                <div class="col-md-6">
+                                    <div class="card {% if forloop.first %}border-primary{% endif %}">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                {{ radio.tag }}
+                                                <label class="form-check-label" for="{{ radio.id_for_label }}">
+                                                    {{ radio.choice_label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+                            {{ form.password1.errors }}
+                            <input type="password" name="{{ form.password1.name }}" class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                   id="{{ form.password1.id_for_label }}" required>
+                            <div class="form-text">{{ form.password1.help_text }}</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                            {{ form.password2.errors }}
+                            <input type="password" name="{{ form.password2.name }}" class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                   id="{{ form.password2.id_for_label }}" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

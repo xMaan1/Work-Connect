@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Search and Filter Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" name="q" class="form-control" placeholder="Search jobs..." value="{{ request.GET.q }}">
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="location" class="form-control" placeholder="Location" value="{{ request.GET.location }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+                
+                <!-- Advanced Filters -->
+                <div class="col-md-12 mt-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select name="type" class="form-select">
+                                <option value="">Employment Type</option>
+                                {% for type_code, type_name in employment_types %}
+                                <option value="{{ type_code }}" {% if request.GET.type == type_code %}selected{% endif %}>
+                                    {{ type_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="experience" class="form-select">
+                                <option value="">Experience Level</option>
+                                {% for level_code, level_name in experience_levels %}
+                                <option value="{{ level_code }}" {% if request.GET.experience == level_code %}selected{% endif %}>
+                                    {{ level_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Job Listings -->
+    <div class="row">
+        {% if jobs %}
+            {% for job in jobs %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            {% if job.company.logo %}
+                            <img src="{{ job.company.logo.url }}" alt="{{ job.company.company_name }}" class="me-3" style="width: 48px; height: 48px; object-fit: contain;">
+                            {% endif %}
+                            <div>
+                                <h5 class="card-title mb-0">{{ job.title }}</h5>
+                                <p class="text-muted mb-0">{{ job.company.company_name }}</p>
+                            </div>
+                        </div>
+                        <p class="card-text text-muted">
+                            <i class="bi bi-geo-alt-fill"></i> {{ job.location }}<br>
+                            <i class="bi bi-briefcase-fill"></i> {{ job.get_employment_type_display }}<br>
+                            <i class="bi bi-cash"></i> ${{ job.salary_min }} - ${{ job.salary_max }} per year
+                        </p>
+                        <p class="card-text">{{ job.description|truncatewords:30 }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Posted {{ job.created_at|timesince }} ago</small>
+                            <a href="{% url 'job_detail' job.slug %}" class="btn btn-outline-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No jobs found matching your criteria.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if jobs.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if jobs.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ jobs.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in jobs.paginator.page_range %}
+            <li class="page-item {% if jobs.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if jobs.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ jobs.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

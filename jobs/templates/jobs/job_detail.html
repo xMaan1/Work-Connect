@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Main Job Details -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        {% if job.company.logo %}
+                        <img src="{{ job.company.logo.url }}" alt="{{ job.company.company_name }}" class="me-3" style="width: 64px; height: 64px; object-fit: contain;">
+                        {% endif %}
+                        <div>
+                            <h1 class="h2 mb-0">{{ job.title }}</h1>
+                            <p class="text-muted mb-0">{{ job.company.company_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="mb-1"><i class="bi bi-geo-alt-fill text-primary"></i> {{ job.location }}</p>
+                            <p class="mb-1"><i class="bi bi-briefcase-fill text-primary"></i> {{ job.get_employment_type_display }}</p>
+                            <p class="mb-1"><i class="bi bi-cash text-primary"></i> ${{ job.salary_min }} - ${{ job.salary_max }} per year</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><i class="bi bi-calendar text-primary"></i> Posted {{ job.created_at|date:"F j, Y" }}</p>
+                            <p class="mb-1"><i class="bi bi-clock text-primary"></i> Apply by {{ job.deadline|date:"F j, Y" }}</p>
+                            <p class="mb-1"><i class="bi bi-eye text-primary"></i> {{ job.views_count }} views</p>
+                        </div>
+                    </div>
+
+                    {% if job.is_expired %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i> This job posting has expired.
+                    </div>
+                    {% endif %}
+
+                    <h5 class="card-title">Job Description</h5>
+                    <div class="card-text mb-4">{{ job.description|linebreaks }}</div>
+
+                    <h5 class="card-title">Requirements</h5>
+                    <div class="card-text mb-4">{{ job.requirements|linebreaks }}</div>
+
+                    <h5 class="card-title">Responsibilities</h5>
+                    <div class="card-text mb-4">{{ job.responsibilities|linebreaks }}</div>
+
+                    {% if job.benefits %}
+                    <h5 class="card-title">Benefits</h5>
+                    <div class="card-text mb-4">{{ job.benefits|linebreaks }}</div>
+                    {% endif %}
+
+                    <h5 class="card-title">Required Skills</h5>
+                    <div class="mb-4">
+                        {% for skill in job.skills_required.split %}
+                        <span class="badge bg-light text-dark me-2 mb-2">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Application Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% if not job.is_expired %}
+                        {% if has_applied %}
+                            <div class="alert alert-info">
+                                <i class="bi bi-check-circle-fill"></i> You have already applied for this position.
+                            </div>
+                        {% else %}
+                            {% if user.is_authenticated and user.role == 'seeker' %}
+                                <a href="{% url 'apply_to_job' job.id %}" class="btn btn-primary w-100 mb-3">Apply Now</a>
+                            {% elif user.is_authenticated %}
+                                <div class="alert alert-warning">
+                                    Only job seekers can apply for positions.
+                                </div>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-primary w-100 mb-3">Login to Apply</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Company Info -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">About {{ job.company.company_name }}</h5>
+                    <p class="mb-2"><i class="bi bi-globe2"></i> <a href="{{ job.company.website }}" target="_blank">Website</a></p>
+                    <p class="mb-2"><i class="bi bi-building"></i> {{ job.company.industry }}</p>
+                    <p class="mb-2"><i class="bi bi-people-fill"></i> {{ job.company.company_size }} employees</p>
+                    <p class="card-text">{{ job.company.about|truncatewords:50 }}</p>
+                </div>
+            </div>
+
+            <!-- Similar Jobs -->
+            {% if similar_jobs %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Similar Jobs</h5>
+                    {% for similar_job in similar_jobs %}
+                    <div class="mb-3">
+                        <h6 class="mb-1">
+                            <a href="{% url 'job_detail' similar_job.slug %}" class="text-decoration-none">{{ similar_job.title }}</a>
+                        </h6>
+                        <small class="text-muted">{{ similar_job.company.company_name }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
